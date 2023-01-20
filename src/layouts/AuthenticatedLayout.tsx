@@ -1,16 +1,20 @@
+import { Navbar } from "@/components/Navbar";
+import { useAuth } from "@/utils/hooks/useAuth";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useAuth } from "@/utils/hooks/useAuth";
 import { useEffect } from "react";
+import { PropsWithChildren } from "react";
 
-export default function Home() {
-  const router = useRouter();
+interface AunticatedLayoutProps {}
+
+export const AuthenticatedLayout = ({
+  children,
+}: PropsWithChildren<AunticatedLayoutProps>) => {
   const { isAuthReady, isAuthenticated } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    if (isAuthReady && isAuthenticated) {
-      void router.replace("/dashboard");
-    } else {
+    if (isAuthReady && !isAuthenticated) {
       void router.replace("/login");
     }
   }, [isAuthReady, isAuthenticated, router]);
@@ -20,10 +24,12 @@ export default function Home() {
       <Head>
         <title>Katchup</title>
         <meta name="description" content="Katchup Twitch App" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main></main>
+      <main>
+        <Navbar />
+        {isAuthenticated && <>{children}</>}
+      </main>
     </>
   );
-}
+};
