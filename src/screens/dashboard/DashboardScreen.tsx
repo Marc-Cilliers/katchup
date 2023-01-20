@@ -7,7 +7,8 @@ import {
 } from "@/utils/hooks/useVideos";
 import { Spinner } from "@/components/Spinner";
 import { DateTime } from "luxon";
-import { Maybe } from "@/utils/utilityTypes";
+import { VideoCard } from "./components";
+import { Icon } from "@/icons/Icon";
 
 export const DashboardScreen = () => {
   const { videos, isLoading, removeVideo } = useVideos();
@@ -15,9 +16,12 @@ export const DashboardScreen = () => {
   return (
     <div>
       <div className="p-5 text-lg font-semibold text-left text-white">
-        Youtube Videos
+        <div className="flex flex-row align-middle justify-start gap-2">
+          <Icon name="youtube" />
+          <p className="leading-7 text-2xl">Youtube Videos</p>
+        </div>
         <p className="mt-1 text-sm font-normal text-gray-400">
-          All links sent to you by users in your twitch chat
+          All links sent to you by twitch chat
         </p>
       </div>
       {isLoading && (
@@ -27,7 +31,12 @@ export const DashboardScreen = () => {
       )}
       {!isLoading && (
         <Table
-          headers={["Youtube Video", "Duration", "User", "Sent", "Rating"]}
+          headers={[
+            "Youtube Video",
+            "User",
+            "Sent",
+            "Rate this Recommendation",
+          ]}
           rows={videos.map((v) => getVideoRow(v, removeVideo))}
         />
       )}
@@ -36,17 +45,7 @@ export const DashboardScreen = () => {
 };
 
 const getVideoRow = (video: ChatterVideo, removeVideo: RemoveVideoFn) => {
-  const { hours, minutes, seconds } = getDurationFromString(video.duration);
-
-  const url = (
-    <Link key={video.id} href={video.url} target="_blank">
-      {video.title ?? video.url}
-    </Link>
-  );
-
-  const duration = video.duration
-    ? `${hours}${hours ? " " : ""}${minutes}${minutes ? " " : ""}${seconds}`
-    : "N/A";
+  const url = <VideoCard video={video} />;
 
   const chatter = (
     <Link
@@ -92,17 +91,5 @@ const getVideoRow = (video: ChatterVideo, removeVideo: RemoveVideoFn) => {
     </div>
   );
 
-  return [url, duration, chatter, timestamp, actions];
-};
-
-const getDurationFromString = (duration: Maybe<string>) => {
-  let hours = duration?.toLowerCase().split("").splice(2);
-  let minutes = hours?.splice(hours.indexOf("h") + 1);
-  let seconds = minutes?.splice(minutes.indexOf("m") + 1);
-
-  return {
-    hours: hours?.join(""),
-    minutes: minutes?.join(""),
-    seconds: seconds?.join(""),
-  };
+  return [url, chatter, timestamp, actions];
 };
