@@ -9,9 +9,27 @@ import { Spinner } from "@/components/Spinner";
 import { DateTime } from "luxon";
 import { VideoCard } from "./components";
 import { Icon } from "@/icons/Icon";
+import { useRealtimeEvents } from "@/utils/hooks/useRealtimeEvents";
+import { useEffect } from "react";
+import { useAuth } from "@/utils/hooks/useAuth";
+import { createVideoFromEventPayload } from "./utils/createVideoFromEvent";
 
 export const DashboardScreen = () => {
-  const { videos, isLoading, removeVideo } = useVideos();
+  const { user } = useAuth();
+  const { videos, isLoading, removeVideo, addVideo } = useVideos();
+  const { subscribeToRoom } = useRealtimeEvents();
+
+  useEffect(() => {
+    subscribeToRoom({
+      room: "youtube",
+      event: "newVideo",
+      callbackFn: (args) => {
+        const newVideo = createVideoFromEventPayload(args.payload, user?.id!);
+        addVideo(newVideo);
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
