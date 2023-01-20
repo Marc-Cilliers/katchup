@@ -16,7 +16,7 @@ import { createVideoFromEventPayload } from "./utils/createVideoFromEvent";
 
 export const DashboardScreen = () => {
   const { user } = useAuth();
-  const { videos, isLoading, removeVideo, addVideo } = useVideos();
+  const { videos, isLoading, removeVideo, addVideos } = useVideos();
   const { subscribeToRoom } = useRealtimeEvents();
 
   useEffect(() => {
@@ -24,8 +24,8 @@ export const DashboardScreen = () => {
       room: "youtube",
       event: "newVideo",
       callbackFn: (args) => {
-        const newVideo = createVideoFromEventPayload(args.payload, user?.id!);
-        addVideo(newVideo);
+        const newVideos = createVideoFromEventPayload(args.payload, user?.id!);
+        addVideos(newVideos);
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

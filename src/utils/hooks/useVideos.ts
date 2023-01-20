@@ -9,12 +9,12 @@ export type RemoveVideoFn = (
   rating: number
 ) => void;
 
-export type AddVideoFn = (newVideo: ChatterVideo) => void;
+export type AddVideoFn = (newVideos: ChatterVideo[]) => void;
 
 interface UseVideosReturnType {
   videos: ChatterVideo[];
   removeVideo: RemoveVideoFn;
-  addVideo: AddVideoFn;
+  addVideos: AddVideoFn;
   isLoading: boolean;
 }
 
@@ -53,11 +53,11 @@ export const useVideos = (): UseVideosReturnType => {
     [isAuthReady, isAuthenticated, user?.id]
   );
 
-  const addVideo = useCallback(
-    async (newVideo: ChatterVideo) => {
+  const addVideos = useCallback(
+    async (newVideos: ChatterVideo[]) => {
       if (!isAuthReady || !isAuthenticated) return;
 
-      setVideos((videos) => [...videos, newVideo]);
+      setVideos((videos) => [...videos, ...newVideos]);
     },
     [isAuthReady, isAuthenticated]
   );
@@ -71,7 +71,7 @@ export const useVideos = (): UseVideosReturnType => {
   return {
     videos,
     removeVideo,
-    addVideo,
+    addVideos,
     isLoading,
   };
 };
