@@ -13,7 +13,7 @@ export const createVideoFromEventPayload = (
     chatter,
     chatterId: chatter.id,
     duration: info.duration,
-    id: "11",
+    id: info.id,
     thumbnail: info.thumbnail,
     timestamp,
     title: info.title,
