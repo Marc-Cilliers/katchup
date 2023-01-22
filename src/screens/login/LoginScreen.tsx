@@ -33,7 +33,7 @@ const LeftSide = () => {
           <p className="flex flex-row text-3xl">Only chaos</p>
         </div>
       </div>
-      <div className="flex flex-row h-4/6 max-h-80">
+      <div className="flex flex-row h-full max-h-80">
         <ChatWindow speed={5000} />
         <div className="flex flex-col justify-between text-lg ml-5 w-1/2 h-full grow py-5">
           <p>Every link posted in your Twitch chat is fear.</p>
@@ -68,7 +68,7 @@ const RightSide = () => {
           </p>
         </div>
       </div>
-      <div className="flex flex-row h-4/6 max-h-80">
+      <div className="flex flex-row h-full max-h-80">
         <ChatWindow speed={50} dark />
         <div className="flex flex-col justify-between text-2xl ml-5 w-1/2 h-full grow py-5">
           <div className="flex grow h-full gap-2">
@@ -92,11 +92,11 @@ const RightSide = () => {
       </div>
       <div className="flex flex-col h-full text-2xl gap-2 justify-center">
         <div>
-          <p className="text-amber-400">
+          <p className="text-amber-400 text-xl">
             Q: What is the cost of wielding such power?
           </p>
           <p>A: Completely free! (For now. So get in while you can)</p>
-          <p className="text-amber-400">
+          <p className="text-amber-400 text-xl">
             Q: But how much work goes into setting this up?
           </p>
           <p>A: Ever heard of magic? Click the button below and find out</p>

@@ -52,7 +52,7 @@ export const ChatWindow = ({ speed, dark }: ChatWindowProps) => {
     }, speed);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [speed]);
 
   return (
     <div
