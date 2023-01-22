@@ -13,7 +13,7 @@ export type AddVideoFn = (newVideos: ChatterVideo[]) => void;
 
 interface UseVideosReturnType {
   videos: ChatterVideo[];
-  removeVideo: RemoveVideoFn;
+  onRemove: (videoId: string) => void;
   addVideos: AddVideoFn;
   isLoading: boolean;
 }
@@ -41,17 +41,9 @@ export const useVideos = (): UseVideosReturnType => {
     setIsLoading(false);
   }, [user?.id]);
 
-  const removeVideo = useCallback(
-    async (videoId: string, chatterId: string, rating: number) => {
-      if (!isAuthReady || !isAuthenticated) return;
-
-      setVideos((videos) => videos.filter((v) => v.id !== videoId));
-      await axios.delete(`/api/youtube-video`, {
-        data: { videoId, chatterId, userId: user?.id, rating },
-      });
-    },
-    [isAuthReady, isAuthenticated, user?.id]
-  );
+  const onRemove = useCallback(async (videoId: string) => {
+    setVideos((videos) => videos.filter((v) => v.id !== videoId));
+  }, []);
 
   const addVideos = useCallback(
     async (newVideos: ChatterVideo[]) => {
@@ -70,7 +62,7 @@ export const useVideos = (): UseVideosReturnType => {
 
   return {
     videos,
-    removeVideo,
+    onRemove,
     addVideos,
     isLoading,
   };

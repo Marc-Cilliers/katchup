@@ -11,6 +11,7 @@ export const Icon = ({
   height,
   width,
   viewBox,
+  color,
 }: IconProps & ExtraIconProps) => {
   const NamedIcon = Icons[name];
 
@@ -19,6 +20,7 @@ export const Icon = ({
       height={height}
       width={width}
       viewBox={viewBox}
+      color={color}
       testID={`${name}-icon`}
     />
   ) : null;
