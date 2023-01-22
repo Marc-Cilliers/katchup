@@ -1,6 +1,7 @@
 import { ClockIcon } from "./ClockIcon";
 import { EmptyStateIcon } from "./EmptyStateIcon";
 import { SentIcon } from "./SentIcon";
+import { TwitchIcon } from "./TwitchIcon";
 import { UserIcon } from "./UserIcon";
 import { YoutubeIcon } from "./YoutubeIcon";
 
@@ -16,11 +17,18 @@ export type IconProps = {
   testID?: string;
 };
 
-export type IconName = "clock" | "emptyState" | "sent" | "user" | "youtube";
+export type IconName =
+  | "clock"
+  | "emptyState"
+  | "twitch"
+  | "sent"
+  | "user"
+  | "youtube";
 
 export const Icons: Record<IconName, IconType> = {
   clock: ClockIcon,
   emptyState: EmptyStateIcon,
+  twitch: TwitchIcon,
   sent: SentIcon,
   user: UserIcon,
   youtube: YoutubeIcon,

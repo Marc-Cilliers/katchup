@@ -1,5 +1,8 @@
 import Head from "next/head";
 import { signIn } from "next-auth/react";
+import { SignInButton } from "./components/SignInButton";
+import { Icon } from "@/icons/Icon";
+import { ChatWindow } from "./components/ChatWindow";
 
 export const LoginScreen = () => {
   return (
@@ -9,44 +12,101 @@ export const LoginScreen = () => {
         <meta name="description" content="Katchup Login" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col items-center justify-center min-h-screen min-w-full bg-background bg-gradient-to-br from-zinc-700 to-slate-400 text-typography">
-        <h1 className="text-7xl mb-4">Katchup</h1>
-        <h1 className="text-4xl">
-          All your chat&apos;s video recommendations - in one place
-        </h1>
-        <div className="px-8 py-10">
-          <div className="grid gap-8 items-start justify-center">
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-              <button
-                onClick={() => signIn("twitch", { callbackUrl: "/dashboard" })}
-                className="relative px-7 py-4 bg-black rounded-lg leading-none flex items-center divide-x divide-gray-600"
-              >
-                <span className="flex items-center space-x-5">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-pink-600 -rotate-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                    />
-                  </svg>
-                  <span className="pr-6 text-gray-100">Work in Progress</span>
-                </span>
-                <span className="pl-6 text-indigo-400 group-hover:text-gray-100 transition duration-200">
-                  Sign In
-                </span>
-              </button>
-            </div>
-          </div>
+      <main>
+        <div className="flex justify-between h-screen w-screen">
+          <LeftSide />
+          <RightSide />
         </div>
       </main>
     </>
+  );
+};
+
+const LeftSide = () => {
+  return (
+    <div className="pl-5 flex flex-col grow w-4/12 h-screen align-middle">
+      <div className="flex flex-col grow justify-center h-full">
+        <div>
+          <div className="flex flex-row align-middle">
+            <h1 className="text-7xl">Without Katchup</h1>
+          </div>
+          <p className="flex flex-row text-3xl">Only chaos</p>
+        </div>
+      </div>
+      <div className="flex flex-row h-4/6 max-h-80">
+        <ChatWindow speed={5000} />
+        <div className="flex flex-col justify-between text-lg ml-5 w-1/2 h-full grow py-5">
+          <p>Every link posted in your Twitch chat is fear.</p>
+          <p>A fear of the unknown.</p>
+          <p>What lurks beneath the murky waters of the url?</p>
+          <p>Is it a good video? Informative? A meme?</p>
+          <p>
+            Something so long you&apos;ll need to schedule an appointment to
+            watch it?
+          </p>
+        </div>
+        <ul>
+          <li></li>
+        </ul>
+      </div>
+      <div className="flex flex-col h-full"></div>
+    </div>
+  );
+};
+
+const RightSide = () => {
+  return (
+    <div className="pl-20 flex flex-col grow w-8/12 h-screen align-middle bg-gradient-to-br from-fuchsia-700 to-indigo-700">
+      <div className="flex flex-col grow justify-center h-full">
+        <div>
+          <div className="flex flex-row align-middle">
+            <Icon name="twitch" height={60} width={60} />
+            <h1 className="text-7xl">With Katchup</h1>
+          </div>
+          <p className="flex flex-row text-3xl">
+            Completely seamless. Blazingly fast. 🚀
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-row h-4/6 max-h-80">
+        <ChatWindow speed={50} dark />
+        <div className="flex flex-col justify-between text-2xl ml-5 w-1/2 h-full grow py-5">
+          <div className="flex grow h-full gap-2">
+            <p>⚡️ </p>
+            <p>No chat moves too fast for the power you now wield</p>
+          </div>
+          <div className="flex grow h-full gap-2 items-center">
+            <p>📺 </p>
+            <p>
+              Review every video request in detail - in your own space, at your
+              own pace
+            </p>
+          </div>
+          <div className="flex grow h-full gap-2 items-end">
+            <p>🎉 </p>
+            <p>
+              Rate every user&apos;s suggestion and keep track of their scores
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col h-full text-2xl gap-2 justify-center">
+        <div>
+          <p className="text-amber-400">
+            Q: What is the cost of wielding such power?
+          </p>
+          <p>A: Completely free! (For now. So get in while you can)</p>
+          <p className="text-amber-400">
+            Q: But how much work goes into setting this up?
+          </p>
+          <p>A: Ever heard of magic? Click the button below and find out</p>
+        </div>
+        <div className="py-10 flex flex-row">
+          <SignInButton
+            onClick={() => signIn("twitch", { callbackUrl: "/dashboard" })}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
