@@ -4,24 +4,21 @@ export const createVideoFromEventPayload = (
   payload: any,
   userId: string
 ): ChatterVideo[] => {
-  const { info: infoArray, timestamp, chatter } = payload;
-  const videos = [];
+  const { videos, timestamp, chatter } = payload;
 
-  for (const info of infoArray) {
-    videos.push({
+  return videos.map((v: any) => {
+    return {
       archived: null,
-      channel: info.channel,
+      channel: v.channel,
       chatter,
       chatterId: chatter.id,
-      duration: info.duration,
-      id: info.id,
-      thumbnail: info.thumbnail,
+      duration: v.duration,
+      id: v.id,
+      thumbnail: v.thumbnail,
       timestamp,
-      title: info.title,
-      url: info.url,
+      title: v.title,
+      url: v.url,
       userId,
-    });
-  }
-
-  return videos;
+    };
+  });
 };

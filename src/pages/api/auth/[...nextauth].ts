@@ -3,12 +3,13 @@ import prisma from "../../../lib/prisma";
 import NextAuth from "next-auth";
 import TwitchProvider from "next-auth/providers/twitch";
 import axios from "axios";
+import { base64encode } from "nodejs-base64";
 
 export default NextAuth({
   providers: [
     TwitchProvider({
-      clientId: process.env.TWITCH_CLIENT_ID ?? "",
-      clientSecret: process.env.TWITCH_CLIENT_SECRET ?? "",
+      clientId: process.env.TWITCH_CLIENT_ID!,
+      clientSecret: process.env.TWITCH_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
@@ -24,15 +25,17 @@ export default NextAuth({
   },
   events: {
     async signIn(message) {
-      axios.post(`${process.env.GLITCH_URL}/signin`, {
-        username: message.user.name,
-      });
+      const headers = {
+        Authorization: `Bearer ${base64encode(`${process.env.SECRET_TOKEN}`)}`,
+      };
+      const channel = message.user.name;
+
+      await axios.post(
+        `${process.env.KATCHUP_BE_URL}/api/bot/joinChannel`,
+        { channel },
+        { headers }
+      );
     },
-    // async signOut(message) {
-    //   axios.post(`${process.env.GLITCH_URL}/signout`, {
-    //     userId: (message?.session as any).userId,
-    //   });
-    // },
   },
   adapter: PrismaAdapter(prisma),
   secret: process.env.JWT_SECRET,
