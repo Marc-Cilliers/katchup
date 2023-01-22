@@ -105,7 +105,14 @@ const Title = ({ title }: { title: string }) => {
 };
 
 const Channel = ({ channel }: { channel: Maybe<string> }) => {
-  return <p className="text-orange-400">{channel}</p>;
+  return (
+    <Link
+      href={`https://youtube.com/@${channel?.replaceAll(" ", "_")}`}
+      target="_blank"
+    >
+      <p className="text-orange-400 hover:underline">{channel}</p>
+    </Link>
+  );
 };
 
 const Duration = ({ duration }: { duration: Maybe<string> }) => {
@@ -131,12 +138,7 @@ const Chatter = ({ username }: { username: Maybe<string> }) => {
 };
 
 const SentAt = ({ timestamp }: { timestamp: Maybe<string> }) => {
-  return (
-    <div className="flex gap-2">
-      <Icon name="sent" />
-      <p className="text-gray-300 leading-7">{timestamp}</p>
-    </div>
-  );
+  return <p className="text-gray-300 leading-7">{timestamp}</p>;
 };
 
 interface RatingsProps {
