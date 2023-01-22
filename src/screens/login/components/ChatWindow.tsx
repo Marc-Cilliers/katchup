@@ -39,7 +39,7 @@ export const ChatWindow = ({ speed, dark }: ChatWindowProps) => {
       const timestamp = DateTime.utc().toFormat("h:mm");
       const username = faker.internet.userName();
       const msg = `Watch this next! ${faker.internet.url()}`;
-      const color = colors[Math.random() * 11];
+      const color = colors[Math.round(Math.random() * 11)];
 
       const message = { timestamp, username, msg, color };
 
@@ -58,16 +58,18 @@ export const ChatWindow = ({ speed, dark }: ChatWindowProps) => {
     <div
       className={`${bgColor} w-2/6 h-full flex flex-col-reverse overflow-hidden`}
     >
-      {messages.map((m, i) => (
-        <div
-          key={`${m.msg}-${i}`}
-          className={`flex flex-row flex-wrap pl-3 mb-2 ${textColor}`}
-        >
-          <p className="text-slate-600 mr-2">{m.timestamp}</p>
-          <p className={`${colors[i]} mr-2`}>{m.username}:</p>
-          <p>{m.msg}</p>
-        </div>
-      ))}
+      {messages.map((m, i) => {
+        return (
+          <div
+            key={`${m.msg}-${i}`}
+            className={`flex flex-row flex-wrap pl-3 mb-2 ${textColor}`}
+          >
+            <p className="text-slate-600 mr-2">{m.timestamp}</p>
+            <p className={`${m.color} mr-2`}>{m.username}:</p>
+            <p>{m.msg}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };
