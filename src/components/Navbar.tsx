@@ -8,7 +8,7 @@ export const Navbar = () => {
   const userImage = user?.image ?? "";
 
   return (
-    <nav className="border-gray-200 px-2 sm:px-4 py-2.5 rounded bg-gray-900">
+    <nav className="border-gray-200 px-2 sm:px-4 py-2.5 rounded bg-zinc-900">
       <div className="container flex flex-wrap items-start justify-start dark">
         <div className="flex flex-row justify-start dark">
           {userImage && (
@@ -43,7 +43,7 @@ export const Navbar = () => {
           </svg>
         </button>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-zinc-800 md:dark:bg-zinc-900 dark:border-zinc-700">
             <li>
               <NavButton text="Logout" onClick={() => signOut()} />
             </li>
