@@ -20,11 +20,6 @@ const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  await prisma.user.findMany({
-    where: { sessions: { some: { id: { not: "" } } } },
-    include: { sessions: true },
-  });
-
   await prisma.youtubeVideo.update({
     data: { archived: DateTime.utc().toISO() },
     where: { id: videoId },
