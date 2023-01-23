@@ -1,13 +1,13 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ChatterVideo, RemoveVideoFn } from "@/utils/hooks/useVideos";
 import { Maybe } from "@/utils/utilityTypes";
 import { Icon } from "@/icons/Icon";
 import { Spinner } from "@/components/Spinner";
-import { DateTime } from "luxon";
 import { motion } from "framer-motion";
 import { useRemoveVideo } from "@/utils/hooks/useRemoveVideo";
 import { Delay } from "@/components/Delay";
+import { Timer } from "./Timer";
+import { Thumbnail } from "./Thumnbail";
 
 interface VideoCardProps {
   video: ChatterVideo;
@@ -17,7 +17,6 @@ interface VideoCardProps {
 
 export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
   const { removeVideo, isLoading } = useRemoveVideo({ callbackFn: onRemove });
-
   if (!video) return <Spinner />;
 
   if (!video.title)
@@ -33,18 +32,13 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
       </Link>
     );
 
-  const thumnailHQ = video.thumbnail?.replace("default", "hqdefault");
-  const timestamp = DateTime.fromISO(
-    video.timestamp as unknown as string
-  ).toRelative();
-
   return (
     <Delay delay={index * 255}>
       <motion.div
         layoutId={video.id}
         initial={{ scale: 0, x: 4000, rotate: 180 }}
         animate={{ rotate: 0, x: 0, scale: 1 }}
-        exit={{ rotate: 180, y: -1000 }}
+        exit={{ rotate: 180, y: -10000 }}
         transition={{
           type: "spring",
           stiffness: 260,
@@ -60,15 +54,7 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
             href={video.url}
             target="_blank"
           >
-            {thumnailHQ && (
-              <Image
-                className="rounded-t-lg w-full"
-                src={thumnailHQ}
-                alt={`${video.title} video thumbnail`}
-                width={1000}
-                height={100}
-              />
-            )}
+            <Thumbnail url={video.thumbnail} title={video.title} />
             <div className="p-5 flex flex-col grow justify-between">
               <Title title={video.title} />
               <div className="flex flex-col gap-2 mb-4">
@@ -78,7 +64,7 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
 
               <div className="flex flex-row justify-between border-t border-b border-gray-500 py-4 align-middle">
                 <Chatter username={video.chatter.username} />
-                <SentAt timestamp={timestamp} />
+                <Timer timestamp={video.timestamp as unknown as string} />
               </div>
 
               <div className="flex flex-col justify-between mt-3">
@@ -135,10 +121,6 @@ const Chatter = ({ username }: { username: Maybe<string> }) => {
       </div>
     </Link>
   );
-};
-
-const SentAt = ({ timestamp }: { timestamp: Maybe<string> }) => {
-  return <p className="text-gray-300 leading-7">{timestamp}</p>;
 };
 
 interface RatingsProps {
