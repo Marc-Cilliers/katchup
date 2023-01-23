@@ -26,7 +26,9 @@ export default NextAuth({
   events: {
     async signIn(message) {
       const headers = {
-        Authorization: `Bearer ${base64encode(`${process.env.SECRET_TOKEN}`)}`,
+        Authorization: `Bearer ${base64encode(
+          `${process.env.KATCHUP_BE_TOKEN}`
+        )}`,
       };
       const channel = message.user.name;
 
