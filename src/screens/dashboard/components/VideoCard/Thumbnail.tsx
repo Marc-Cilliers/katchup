@@ -17,7 +17,7 @@ export const Thumbnail = ({
   if (!url || !thumbnailHQ) return null;
 
   return (
-    <div className="flex flex-col justify-center align-middle items-center max-h-min h-2/6">
+    <div className="flex flex-col justify-center align-middle items-center max-h-min h-full">
       <Image
         className="rounded-t-lg w-full h-full"
         src={thumbnailHQ}

@@ -47,7 +47,7 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
         damping: 20,
         duration: 50,
       }}
-      className="mb-10 h-[36rem] flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min max-h-min"
+      className="mb-10 h-[30rem] flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min max-h-min"
     >
       <div className="w-full rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-0.5 h-full">
         <Link
@@ -56,30 +56,27 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
           href={video.url}
           target="_blank"
         >
-          {!thumbnailLoaded && (
-            <div className="flex justify-center align-middle h-2/6 items-center">
-              <Spinner />
-            </div>
-          )}
-          <Thumbnail
-            url={video.thumbnail}
-            title={video.title}
-            onLoadingFinished={() => setThumbnailLoaded(true)}
-          />
-          <div className="px-5 pb-5 pt-2 flex flex-col grow justify-between">
+          <div className="flex justify-center align-middle h-3/6 items-center">
+            {!thumbnailLoaded && <Spinner />}
+            <Thumbnail
+              url={video.thumbnail}
+              title={video.title}
+              onLoadingFinished={() => setThumbnailLoaded(true)}
+            />
+          </div>
+          <div className="flex flex-col justify-evenly h-3/6 px-5 pt-2">
             <Title title={video.title} />
-            <div className="flex flex-col gap-2 mb-4">
-              <Channel channel={video.channel} />
-              <Duration duration={video.duration} />
-            </div>
-
-            <div className="flex flex-row justify-between border-t border-b border-gray-500 py-4 align-middle">
+            <Channel channel={video.channel} />
+            <Duration duration={video.duration} />
+          </div>
+          <div className="px-5 flex flex-col justify-evenly h-3/6">
+            <div className="flex flex-row justify-between border-t border-b border-gray-500 py-2 align-middle">
               <Chatter username={video.chatter.username} />
               <Timer timestamp={video.timestamp as unknown as string} />
             </div>
 
-            <div className="flex flex-col justify-between mt-3">
-              <p className="text-gray-500 text-center mb-3">
+            <div className="flex flex-col h-1/2 gap-1 justify-evenly">
+              <p className="text-gray-500 text-center">
                 Rate this recommendation
               </p>
               <Ratings
@@ -97,7 +94,11 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
 };
 
 const Title = ({ title }: { title: string }) => {
-  return <h3 className="h-5/6 text-lg font-semibold">{title}</h3>;
+  return (
+    <h3 className="h-2/6 text-lg font-semibold overflow-ellipsis overflow-hidden grow">
+      {title}
+    </h3>
+  );
 };
 
 const Channel = ({ channel }: { channel: Maybe<string> }) => {
@@ -126,7 +127,7 @@ const Chatter = ({ username }: { username: Maybe<string> }) => {
   return (
     <Link href={`https://twitch.tv/${username}`} target="_blank">
       <div className="flex hover:underline">
-        <p className="leading-7">{username}</p>
+        <p className="">{username}</p>
       </div>
     </Link>
   );
@@ -158,30 +159,30 @@ const Ratings = ({ removeVideo, isLoading, id, chatterId }: RatingsProps) => {
   };
 
   return (
-    <div className="flex justify-between mb-2">
+    <div className="flex justify-evenly h-full">
       <button
         onClick={(e) => rateVideo(e, 1)}
-        className="relative w-full inline-flex items-center justify-center p-0.5 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-purple-800"
+        className="h-full flex w-4/12 items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-purple-800"
       >
-        <span className="text-2xl relative w-full py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+        <span className="flex justify-center align-middle items-center text-2xl content-center w-full relative transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0 h-full">
           🎉
         </span>
       </button>
 
       <button
         onClick={(e) => rateVideo(e, 0)}
-        className="relative w-full inline-flex items-center justify-center p-0.5 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-pink-500 to-lime-500 group-hover:from-pink-500 group-hover:to-lime-500 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-green-800"
+        className="w-1/4 flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-pink-500 to-lime-500 group-hover:from-pink-500 group-hover:to-lime-500 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-green-800"
       >
-        <span className="text-2xl w-full relative py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+        <span className="flex justify-center align-middle items-center text-2xl content-center w-full relative transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0 h-full">
           🙃
         </span>
       </button>
 
       <button
         onClick={(e) => rateVideo(e, -1)}
-        className="relative w-full inline-flex items-center justify-center p-0.5 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-teal-500 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-800"
+        className="w-4/12 flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-teal-500 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-800"
       >
-        <span className="text-2xl w-full relative py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+        <span className="flex justify-center align-middle items-center text-2xl content-center w-full relative transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0 h-full">
           🤮
         </span>
       </button>
