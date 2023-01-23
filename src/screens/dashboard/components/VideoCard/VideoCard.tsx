@@ -63,7 +63,7 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
               onLoadingFinished={() => setThumbnailLoaded(true)}
             />
           </div>
-          <div className="flex flex-col justify-start pt-2 h-2/6 px-5">
+          <div className="flex flex-col justify-start pt-2 h-2/6 px-5 overflow-ellipsis max-h-[33.33%] overflow-hidden">
             <Title title={video.title} />
           </div>
           <div className="flex flex-row justify-between px-5 h-1/6 mb-2">
@@ -95,7 +95,11 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
 };
 
 const Title = ({ title }: { title: string }) => {
-  return <h3 className="text-lg font-semibold overflow-ellipsis">{title}</h3>;
+  return (
+    <h3 className="text-lg font-semibold overflow-ellipsis max-w-full">
+      {title}
+    </h3>
+  );
 };
 
 const Channel = ({ channel }: { channel: Maybe<string> }) => {
