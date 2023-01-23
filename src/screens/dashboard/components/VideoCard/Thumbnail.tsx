@@ -7,7 +7,7 @@ interface ThumbnailProps {
 }
 
 export const Thumbnail = ({ url, title }: ThumbnailProps) => {
-  const thumbnailHQ = url?.replace("default", "hqdefault");
+  const thumbnailHQ = url?.replace("default", "maxresdefault");
 
   if (!url || !thumbnailHQ) return null;
 
@@ -20,7 +20,7 @@ export const Thumbnail = ({ url, title }: ThumbnailProps) => {
         src={thumbnailHQ}
         alt={`${title ?? ""} thumbnail`}
         width={1000}
-        height={100}
+        height={1000}
       />
     </div>
   );

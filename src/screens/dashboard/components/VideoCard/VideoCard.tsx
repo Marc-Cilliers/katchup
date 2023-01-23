@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { useRemoveVideo } from "@/utils/hooks/useRemoveVideo";
 import { Delay } from "@/components/Delay";
 import { Timer } from "./Timer";
-import { Thumbnail } from "./Thumnbail";
+import { Thumbnail } from "./Thumbnail";
 
 interface VideoCardProps {
   video: ChatterVideo;
@@ -45,7 +45,7 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
           damping: 20,
           duration: 50,
         }}
-        className="hover:border-white mb-10 h-auto flex flex-col justify-start align-middle bg-slate-800 rounded-lg w-1/6"
+        className="hover:border-white mb-10 h-auto flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min"
       >
         <div className="w-full rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-0.5 h-full">
           <Link
@@ -116,7 +116,6 @@ const Chatter = ({ username }: { username: Maybe<string> }) => {
   return (
     <Link href={`https://twitch.tv/${username}`} target="_blank">
       <div className="flex hover:underline">
-        <Icon name="user" />
         <p className="leading-7">{username}</p>
       </div>
     </Link>
