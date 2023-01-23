@@ -8,6 +8,7 @@ import { useRemoveVideo } from "@/utils/hooks/useRemoveVideo";
 import { Delay } from "@/components/Delay";
 import { Timer } from "./Timer";
 import { Thumbnail } from "./Thumbnail";
+import { useState } from "react";
 
 interface VideoCardProps {
   video: ChatterVideo;
@@ -17,6 +18,8 @@ interface VideoCardProps {
 
 export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
   const { removeVideo, isLoading } = useRemoveVideo({ callbackFn: onRemove });
+  const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
+
   if (!video) return <Spinner />;
 
   if (!video.title)
@@ -45,7 +48,7 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
           damping: 20,
           duration: 50,
         }}
-        className="hover:border-white mb-10 h-auto flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min"
+        className="mb-10 h-[36rem] flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min max-h-min"
       >
         <div className="w-full rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-0.5 h-full">
           <Link
@@ -54,8 +57,17 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
             href={video.url}
             target="_blank"
           >
-            <Thumbnail url={video.thumbnail} title={video.title} />
-            <div className="p-5 flex flex-col grow justify-between">
+            {!thumbnailLoaded && (
+              <div className="flex justify-center align-middle h-2/6 items-center">
+                <Spinner />
+              </div>
+            )}
+            <Thumbnail
+              url={video.thumbnail}
+              title={video.title}
+              onLoadingFinished={() => setThumbnailLoaded(true)}
+            />
+            <div className="px-5 pb-5 pt-2 flex flex-col grow justify-between">
               <Title title={video.title} />
               <div className="flex flex-col gap-2 mb-4">
                 <Channel channel={video.channel} />

@@ -9,7 +9,7 @@ interface VideoListProps {
 
 export const VideoList = ({ videos, onRemove }: VideoListProps) => {
   return (
-    <div className="flex flex-row gap-10 ml-5 flex-wrap">
+    <div className="flex flex-row gap-10 ml-5 flex-wrap h-full">
       <LayoutGroup id="card">
         <AnimatePresence>
           {videos.map((v, index) => (

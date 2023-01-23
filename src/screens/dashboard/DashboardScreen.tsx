@@ -26,7 +26,7 @@ export const DashboardScreen = () => {
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-1/3 flex flex-col">
       <div className="p-5 text-lg font-semibold text-left text-white">
         <div className="flex flex-row align-middle justify-start gap-2">
           <Icon name="youtube" />
