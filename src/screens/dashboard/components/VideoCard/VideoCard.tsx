@@ -36,65 +36,63 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
     );
 
   return (
-    <Delay delay={index * 255}>
-      <motion.div
-        layoutId={video.id}
-        initial={{ scale: 0, x: 4000, rotate: 180 }}
-        animate={{ rotate: 0, x: 0, scale: 1 }}
-        exit={{ rotate: 180, y: -10000 }}
-        transition={{
-          type: "spring",
-          stiffness: 260,
-          damping: 20,
-          duration: 50,
-        }}
-        className="mb-10 h-[36rem] flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min max-h-min"
-      >
-        <div className="w-full rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-0.5 h-full">
-          <Link
-            className="flex grow flex-col bg-slate-800 rounded-md h-full"
-            key={video.id}
-            href={video.url}
-            target="_blank"
-          >
-            {!thumbnailLoaded && (
-              <div className="flex justify-center align-middle h-2/6 items-center">
-                <Spinner />
-              </div>
-            )}
-            <Thumbnail
-              url={video.thumbnail}
-              title={video.title}
-              onLoadingFinished={() => setThumbnailLoaded(true)}
-            />
-            <div className="px-5 pb-5 pt-2 flex flex-col grow justify-between">
-              <Title title={video.title} />
-              <div className="flex flex-col gap-2 mb-4">
-                <Channel channel={video.channel} />
-                <Duration duration={video.duration} />
-              </div>
-
-              <div className="flex flex-row justify-between border-t border-b border-gray-500 py-4 align-middle">
-                <Chatter username={video.chatter.username} />
-                <Timer timestamp={video.timestamp as unknown as string} />
-              </div>
-
-              <div className="flex flex-col justify-between mt-3">
-                <p className="text-gray-500 text-center mb-3">
-                  Rate this recommendation
-                </p>
-                <Ratings
-                  isLoading={isLoading}
-                  removeVideo={removeVideo}
-                  id={video.id}
-                  chatterId={video.chatterId}
-                />
-              </div>
+    <motion.div
+      layoutId={video.id}
+      initial={{ scale: 0, x: 4000, rotate: 180 }}
+      animate={{ rotate: 0, x: 0, scale: 1 }}
+      exit={{ rotate: 180, y: -10000 }}
+      transition={{
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+        duration: 50,
+      }}
+      className="mb-10 h-[36rem] flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min max-h-min"
+    >
+      <div className="w-full rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-0.5 h-full">
+        <Link
+          className="flex grow flex-col bg-slate-800 rounded-md h-full"
+          key={video.id}
+          href={video.url}
+          target="_blank"
+        >
+          {!thumbnailLoaded && (
+            <div className="flex justify-center align-middle h-2/6 items-center">
+              <Spinner />
             </div>
-          </Link>
-        </div>
-      </motion.div>
-    </Delay>
+          )}
+          <Thumbnail
+            url={video.thumbnail}
+            title={video.title}
+            onLoadingFinished={() => setThumbnailLoaded(true)}
+          />
+          <div className="px-5 pb-5 pt-2 flex flex-col grow justify-between">
+            <Title title={video.title} />
+            <div className="flex flex-col gap-2 mb-4">
+              <Channel channel={video.channel} />
+              <Duration duration={video.duration} />
+            </div>
+
+            <div className="flex flex-row justify-between border-t border-b border-gray-500 py-4 align-middle">
+              <Chatter username={video.chatter.username} />
+              <Timer timestamp={video.timestamp as unknown as string} />
+            </div>
+
+            <div className="flex flex-col justify-between mt-3">
+              <p className="text-gray-500 text-center mb-3">
+                Rate this recommendation
+              </p>
+              <Ratings
+                isLoading={isLoading}
+                removeVideo={removeVideo}
+                id={video.id}
+                chatterId={video.chatterId}
+              />
+            </div>
+          </div>
+        </Link>
+      </div>
+    </motion.div>
   );
 };
 
