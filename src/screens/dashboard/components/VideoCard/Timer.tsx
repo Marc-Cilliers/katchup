@@ -17,5 +17,5 @@ export const Timer = ({ timestamp }: TimerProps) => {
     return () => clearInterval(interval);
   }, [dateTime]);
 
-  return <p className="text-gray-300 leading-7">{timeAgo}</p>;
+  return <p className="text-md text-gray-300">{timeAgo}</p>;
 };

@@ -16,7 +16,7 @@ interface VideoCardProps {
 }
 
 export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
-  const { removeVideo, isLoading } = useRemoveVideo({ callbackFn: onRemove });
+  const { removeVideo } = useRemoveVideo({ callbackFn: onRemove });
   const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
 
   if (!video) return <Spinner />;
@@ -39,56 +39,46 @@ export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
       layoutId={video.id}
       initial={{ scale: 0, x: 4000, rotate: 180 }}
       animate={{ rotate: 0, x: 0, scale: 1 }}
-      exit={{ rotate: 180, y: -10000 }}
+      exit={{ rotate: 420, scale: 0 }}
       transition={{
         type: "spring",
         stiffness: 260,
-        damping: 20,
+        damping: 40,
         duration: 50,
       }}
-      className="mb-10 h-[30rem] flex flex-col justify-start align-middle bg-slate-800 rounded-lg max-w-xs min-w-min max-h-min"
+      className="mb-10 h-[23rem] flex flex-col justify-start align-middle rounded-lg max-w-xs min-w-xs max-h-min"
     >
-      <div className="w-full rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-0.5 h-full">
+      <div className="flex grow flex-col rounded-md h-full">
         <Link
-          className="flex grow flex-col bg-slate-800 rounded-md h-full"
+          className="flex justify-center align-middle h-1/2 items-center"
           key={video.id}
           href={video.url}
           target="_blank"
         >
-          <div className="flex justify-center align-middle h-1/2 items-center">
-            {!thumbnailLoaded && <Spinner />}
-            <Thumbnail
-              url={video.thumbnail}
-              title={video.title}
-              onLoadingFinished={() => setThumbnailLoaded(true)}
-            />
-          </div>
-          <div className="flex flex-col justify-start pt-2 h-2/6 px-5 overflow-ellipsis max-h-[33.33%] overflow-hidden">
-            <Title title={video.title} />
-          </div>
-          <div className="flex flex-row justify-between px-5 h-1/6 mb-2">
-            <div className="flex flex-col items-start justify-center">
-              <Channel channel={video.channel} />
-              <Duration duration={video.duration} />
-            </div>
-            <div className="flex border-r border-gray-500" />
-            <div className="flex flex-col items-end justify-center">
-              <Chatter username={video.chatter.username} />
-              <Timer timestamp={video.timestamp as unknown as string} />
-            </div>
-          </div>
-          <div className="px-5 flex flex-col justify-center h-2/6">
-            <p className="text-gray-500 text-center">
-              Rate this recommendation
-            </p>
-            <Ratings
-              isLoading={isLoading}
-              removeVideo={removeVideo}
-              id={video.id}
-              chatterId={video.chatterId}
-            />
-          </div>
+          {!thumbnailLoaded && <Spinner />}
+          <Thumbnail
+            url={video.thumbnail}
+            title={video.title}
+            duration={video.duration as string}
+            onLoadingFinished={() => setThumbnailLoaded(true)}
+          />
         </Link>
+        <div className="px-2 pt-2 h-1/2">
+          <Link key={video.id} href={video.url} target="_blank">
+            <Title title={video.title} />
+          </Link>
+          <Channel channel={video.channel} channelId={video.channelId} />
+          <div className="flex flex-row gap-2">
+            <Chatter username={video.chatter.username} />
+            <p>·</p>
+            <Timer timestamp={video.timestamp as unknown as string} />
+          </div>
+          <Ratings
+            removeVideo={removeVideo}
+            id={video.id}
+            chatterId={video.chatterId}
+          />
+        </div>
       </div>
     </motion.div>
   );
@@ -102,32 +92,20 @@ const Title = ({ title }: { title: string }) => {
   );
 };
 
-const Channel = ({ channel }: { channel: Maybe<string> }) => {
-  return (
-    <Link
-      href={`https://youtube.com/@${channel?.replaceAll(" ", "_")}`}
-      target="_blank"
-    >
-      <p className="text-orange-400 hover:underline">{channel}</p>
-    </Link>
-  );
-};
+const Channel = ({
+  channel,
+  channelId,
+}: {
+  channel: Maybe<string>;
+  channelId: Maybe<string>;
+}) => {
+  const ref = channelId
+    ? `https://youtube.com/channel/${channelId}`
+    : `https://youtube.com/@${channel?.replaceAll(" ", "_")}`;
 
-const Duration = ({ duration }: { duration: Maybe<string> }) => {
   return (
-    <div className="flex flex-row gap-1">
-      <Icon name="clock" className="h-auto align-middle" />
-      <p className="h-auto align-middle leading-6">
-        {getDurationFromString(duration)}
-      </p>
-    </div>
-  );
-};
-
-const Chatter = ({ username }: { username: Maybe<string> }) => {
-  return (
-    <Link href={`https://twitch.tv/${username}`} target="_blank">
-      <p className="text-purple-500 hover:underline">{username}</p>
+    <Link href={ref} target="_blank">
+      <p className="text-gray-400 text-sm hover:text-white">{channel}</p>
     </Link>
   );
 };
@@ -135,70 +113,52 @@ const Chatter = ({ username }: { username: Maybe<string> }) => {
 interface RatingsProps {
   removeVideo: RemoveVideoFn;
   id: string;
-  isLoading: boolean;
   chatterId: string;
 }
 
-const Ratings = ({ removeVideo, isLoading, id, chatterId }: RatingsProps) => {
-  if (isLoading)
-    return (
-      <div className="flex justify-center py-4">
-        <Spinner />
-      </div>
-    );
-
-  const rateVideo = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    rating: number
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    removeVideo(id, chatterId, rating);
-  };
+const Ratings = ({ removeVideo, id, chatterId }: RatingsProps) => {
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
 
   return (
-    <div className="flex justify-evenly h-full items-center">
+    <div
+      className={`flex flex-row mt-2 rounded-full w-1/2 justify-center align-middle `}
+    >
       <button
-        onClick={(e) => rateVideo(e, 1)}
-        className="h-2/3 flex w-4/12 items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-purple-800"
+        disabled={liked || disliked}
+        onClick={() => {
+          removeVideo(id, chatterId, 1);
+          setLiked(true);
+        }}
+        className={`bg-zinc-800 hover:bg-zinc-500 py-2 w-full flex justify-center items-center rounded-l-full ${
+          liked && "bg-zinc-100"
+        }`}
       >
-        <span className="flex justify-center align-middle items-center text-2xl content-center w-full relative transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0 h-full">
-          🎉
-        </span>
+        <Icon name="thumbsUp" color={liked ? "#000000" : undefined} />
       </button>
-
+      <div className="border-r h-1/2"></div>
       <button
-        onClick={(e) => rateVideo(e, 0)}
-        className="h-2/3 w-1/4 flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-pink-500 to-lime-500 group-hover:from-pink-500 group-hover:to-lime-500 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-green-800"
+        disabled={liked || disliked}
+        onClick={() => {
+          removeVideo(id, chatterId, 1);
+          setDisliked(true);
+        }}
+        className={`bg-zinc-800 hover:bg-zinc-500 py-2 w-full flex justify-center items-center rounded-r-full ${
+          disliked && "bg-zinc-100"
+        }`}
       >
-        <span className="flex justify-center align-middle items-center text-2xl content-center w-full relative transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0 h-full">
-          🙃
-        </span>
-      </button>
-
-      <button
-        onClick={(e) => rateVideo(e, -1)}
-        className="h-2/3 w-4/12 flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-teal-500 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-800"
-      >
-        <span className="flex justify-center align-middle items-center text-2xl content-center w-full relative transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0 h-full">
-          🤮
-        </span>
+        <Icon name="thumbsDown" color={disliked ? "#000000" : undefined} />
       </button>
     </div>
   );
 };
 
-const getDurationFromString = (duration: Maybe<string>) => {
-  if (!duration) return "N/A";
-
-  let h = duration?.toLowerCase().split("").splice(2);
-  let m = h?.splice(h.indexOf("h") + 1);
-  let s = m?.splice(m.indexOf("m") + 1);
-
-  const hours = h?.join("");
-  const minutes = m?.join("");
-  const seconds = s?.join("");
-
-  return `${hours}${hours ? " " : ""}${minutes}${minutes ? " " : ""}${seconds}`;
+const Chatter = ({ username }: { username: Maybe<string> }) => {
+  return (
+    <Link href={`https://twitch.tv/${username}`} target="_blank">
+      <p className="text-md text-purple-500 hover:text-purple-300">
+        {username}
+      </p>
+    </Link>
+  );
 };

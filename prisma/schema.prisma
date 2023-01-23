@@ -75,6 +75,7 @@ model YoutubeVideo {
   thumbnail String?
   chatterId String
   userId    String
+  channelId String?
   chatter   Chatter   @relation(fields: [chatterId], references: [id])
   user      User      @relation(fields: [userId], references: [id])
 }
