@@ -12,10 +12,9 @@ import { useState } from "react";
 interface VideoCardProps {
   video: ChatterVideo;
   onRemove: (videoId: string) => void;
-  index: number;
 }
 
-export const VideoCard = ({ index, video, onRemove }: VideoCardProps) => {
+export const VideoCard = ({ video, onRemove }: VideoCardProps) => {
   const { removeVideo } = useRemoveVideo({ callbackFn: onRemove });
   const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
 
@@ -99,12 +98,8 @@ const Channel = ({
   channel: Maybe<string>;
   channelId: Maybe<string>;
 }) => {
-  const ref = channelId
-    ? `https://youtube.com/channel/${channelId}`
-    : `https://youtube.com/@${channel?.replaceAll(" ", "_")}`;
-
   return (
-    <Link href={ref} target="_blank">
+    <Link href={`https://youtube.com/channel/${channelId}`} target="_blank">
       <p className="text-gray-400 text-sm hover:text-white">{channel}</p>
     </Link>
   );

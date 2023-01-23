@@ -12,13 +12,8 @@ export const VideoList = ({ videos, onRemove }: VideoListProps) => {
     <div className="flex flex-row gap-4 ml-5 flex-wrap h-full">
       <LayoutGroup id="card">
         <AnimatePresence>
-          {videos.map((v, index) => (
-            <VideoCard
-              key={v.url}
-              index={index}
-              video={v}
-              onRemove={onRemove}
-            />
+          {videos.map((v) => (
+            <VideoCard key={v.url} video={v} onRemove={onRemove} />
           ))}
         </AnimatePresence>
       </LayoutGroup>
