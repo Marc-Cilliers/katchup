@@ -62,21 +62,25 @@ export const VideoCard = ({ video, onRemove }: VideoCardProps) => {
             onLoadingFinished={() => setThumbnailLoaded(true)}
           />
         </Link>
-        <div className="px-2 pt-2 h-1/2">
-          <Link key={video.id} href={video.url} target="_blank">
-            <Title title={video.title} />
-          </Link>
-          <Channel channel={video.channel} channelId={video.channelId} />
-          <div className="flex flex-row gap-2">
-            <Chatter username={video.chatter.username} />
-            <p>·</p>
-            <Timer timestamp={video.timestamp as unknown as string} />
+        <div className="px-2 pt-2 h-1/2 flex flex-col justify-between">
+          <div className="flex flex-col">
+            <Link key={video.id} href={video.url} target="_blank">
+              <Title title={video.title} />
+            </Link>
+            <Channel channel={video.channel} channelId={video.channelId} />
+            <div className="flex flex-row gap-2">
+              <Chatter username={video.chatter.username} />
+              <p>·</p>
+              <Timer timestamp={video.timestamp as unknown as string} />
+            </div>
           </div>
-          <Ratings
-            removeVideo={removeVideo}
-            id={video.id}
-            chatterId={video.chatterId}
-          />
+          <div className="flex flex-col">
+            <Ratings
+              removeVideo={removeVideo}
+              id={video.id}
+              chatterId={video.chatterId}
+            />
+          </div>
         </div>
       </div>
     </motion.div>
@@ -117,7 +121,7 @@ const Ratings = ({ removeVideo, id, chatterId }: RatingsProps) => {
 
   return (
     <div
-      className={`flex flex-row mt-2 rounded-full w-1/2 justify-center align-middle `}
+      className={`flex flex-row mt-2 rounded-full w-1/2 justify-center align-middle gap-0.5`}
     >
       <button
         disabled={liked || disliked}
@@ -131,7 +135,6 @@ const Ratings = ({ removeVideo, id, chatterId }: RatingsProps) => {
       >
         <Icon name="thumbsUp" color={liked ? "#000000" : undefined} />
       </button>
-      <div className="border-r h-1/2"></div>
       <button
         disabled={liked || disliked}
         onClick={() => {
