@@ -12,15 +12,16 @@ import { useRemoveVideo } from "@/utils/hooks/useRemoveVideo";
 import { Timer } from "./Timer";
 import { Thumbnail } from "./Thumbnail";
 import { useState } from "react";
-import Image from "next/image";
 import { BadgeBuilder } from "./BadgeBuilder";
+import { User } from "@prisma/client";
 
 interface VideoCardProps {
   video: ChatterVideo;
+  user: User;
   onRemove: (videoId: string) => void;
 }
 
-export const VideoCard = ({ video, onRemove }: VideoCardProps) => {
+export const VideoCard = ({ video, onRemove, user }: VideoCardProps) => {
   const { removeVideo } = useRemoveVideo({ callbackFn: onRemove });
   const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
 
@@ -75,7 +76,7 @@ export const VideoCard = ({ video, onRemove }: VideoCardProps) => {
             </Link>
             <Channel channel={video.channel} channelId={video.channelId} />
             <div className="flex flex-row gap-2">
-              <Chatter userChatter={video.userChatter} />
+              <Chatter userChatter={video.userChatter} user={user} />
               <p>·</p>
               <Timer timestamp={video.timestamp as unknown as string} />
             </div>
@@ -157,7 +158,13 @@ const Ratings = ({ removeVideo, id, userChatterId }: RatingsProps) => {
   );
 };
 
-const Chatter = ({ userChatter }: { userChatter: PartialUserChatter }) => {
+const Chatter = ({
+  userChatter,
+  user,
+}: {
+  userChatter: PartialUserChatter;
+  user: User;
+}) => {
   const username = userChatter.chatter.username;
   const { color, badges } = userChatter;
 
@@ -167,7 +174,7 @@ const Chatter = ({ userChatter }: { userChatter: PartialUserChatter }) => {
       target="_blank"
       className="flex flex-row gap-1 align-middle items-center"
     >
-      <BadgeBuilder badges={badges} />
+      <BadgeBuilder badges={badges} user={user} />
       <p style={{ color }} className={`text-md font-semibold hover:underline`}>
         {username}
       </p>

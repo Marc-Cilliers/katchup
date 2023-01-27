@@ -1,11 +1,13 @@
 import { Badges } from "@/utils/hooks/useVideos";
+import { User } from "@prisma/client";
 import Image from "next/image";
 
-const getIcon: Record<string, (value: string) => string> = {
+const getIcon: Record<string, (value: string, subBadges?: any) => string> = {
   broadcaster: () =>
     "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/3",
   moderator: () =>
     "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/3",
+  subscriber: (value, subBadges) => subBadges?.[value] ?? "",
   premium: () =>
     "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fb98ca1933/3",
   turbo: () =>
@@ -24,13 +26,14 @@ const getIcon: Record<string, (value: string) => string> = {
 
 interface BadgeBuilderProps {
   badges: Badges;
+  user: User;
 }
 
-export const BadgeBuilder = ({ badges }: BadgeBuilderProps) => {
+export const BadgeBuilder = ({ badges, user }: BadgeBuilderProps) => {
   return (
     <div className="flex flex-row gap-1">
       {Object.keys(badges).map((badge) => {
-        const icon = getIcon[badge](badges[badge]);
+        const icon = getIcon[badge](badges[badge], user.badges);
         if (!icon) return null;
 
         return (

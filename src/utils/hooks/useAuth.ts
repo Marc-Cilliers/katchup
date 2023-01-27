@@ -1,25 +1,18 @@
+import { User } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Maybe } from "../utilityTypes";
 
-interface User {
-  id?: Maybe<string>;
-  name?: Maybe<string>;
-  email?: Maybe<string>;
-  image?: Maybe<string>;
-}
-
 interface UseAuthReturnType {
   isAuthReady: boolean;
   isAuthenticated: boolean;
-  isAdmin: boolean;
   user?: User;
 }
 
 export const useAuth = (): UseAuthReturnType => {
   const { data: session, status } = useSession();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState<User>();
 
   const isAuthReady = status !== "loading";
   const isAuthenticated = status === "authenticated";
@@ -31,7 +24,7 @@ export const useAuth = (): UseAuthReturnType => {
       if (!userId) return;
 
       const res = await axios.get(`/api/user?userId=${userId}`);
-      setIsAdmin(!!res.data.user?.admin);
+      setUser(res.data.user);
     };
 
     checkForAdmin((session?.user as User).id);
@@ -40,7 +33,6 @@ export const useAuth = (): UseAuthReturnType => {
   return {
     isAuthReady,
     isAuthenticated,
-    user: session?.user,
-    isAdmin,
+    user: user,
   };
 };
