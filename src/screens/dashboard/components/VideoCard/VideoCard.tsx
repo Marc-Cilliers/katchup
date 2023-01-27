@@ -177,7 +177,7 @@ const Chatter = ({ userChatter }: { userChatter: PartialUserChatter }) => {
         />
       )}
       <BadgeBuilder badges={badges} />
-      <p style={{ color }} className={`text-md font-semibold hover:opacity-90`}>
+      <p style={{ color }} className={`text-md font-semibold hover:underline`}>
         {username}
       </p>
     </Link>
