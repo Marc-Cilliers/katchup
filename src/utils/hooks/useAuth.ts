@@ -12,7 +12,7 @@ interface UseAuthReturnType {
 
 export const useAuth = (): UseAuthReturnType => {
   const { data: session, status } = useSession();
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User>(session?.user as User);
 
   const isAuthReady = status !== "loading";
   const isAuthenticated = status === "authenticated";
@@ -33,6 +33,6 @@ export const useAuth = (): UseAuthReturnType => {
   return {
     isAuthReady,
     isAuthenticated,
-    user: user,
+    user,
   };
 };
