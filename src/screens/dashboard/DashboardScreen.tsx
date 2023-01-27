@@ -42,8 +42,8 @@ export const DashboardScreen = () => {
         </div>
       )}
       {!isLoading && !videos.length && <EmptyState />}
-      {!isLoading && user && (
-        <VideoList videos={videos} onRemove={onRemove} user={user} />
+      {!isLoading && !!videos.length && (
+        <VideoList videos={videos} onRemove={onRemove} user={user!} />
       )}
     </div>
   );
