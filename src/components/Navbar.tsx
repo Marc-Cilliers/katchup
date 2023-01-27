@@ -5,7 +5,6 @@ import { signOut } from "next-auth/react";
 export const Navbar = () => {
   const { user } = useAuth();
   const userImage = user?.image;
-  const isAdmin = !!user?.admin;
 
   return (
     <nav className="border-gray-200 px-2 sm:px-4 py-2.5 rounded bg-zinc-900 justify-between">
