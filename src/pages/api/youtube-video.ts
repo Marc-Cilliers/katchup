@@ -11,8 +11,7 @@ export default async function handler(
 
 const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
   const videoId = req.body["videoId"];
-  const chatterId = req.body["chatterId"];
-  const userId = req.body["userId"];
+  const userChatterId = req.body["userChatterId"];
   const rating = req.body["rating"] ?? 0;
 
   if (!videoId) {
@@ -25,9 +24,9 @@ const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
     where: { id: videoId },
   });
 
-  if (chatterId && userId && rating) {
+  if (userChatterId && rating) {
     await prisma.chatterRating.create({
-      data: { chatterId, userId, rating },
+      data: { userChatterId, rating },
     });
   }
 

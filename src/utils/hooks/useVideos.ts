@@ -1,7 +1,6 @@
 import { YoutubeVideo } from "@prisma/client";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "./useAuth";
-import axios from "axios";
 
 export type RemoveVideoFn = (
   videoId: string,
@@ -18,10 +17,19 @@ interface UseVideosReturnType {
   isLoading: boolean;
 }
 
-export type ChatterVideo = YoutubeVideo & {
+export type PartialUserChatter = {
+  color: string;
+  badges: string[];
+  mod: boolean;
+  subscriber: boolean;
+  turbo: boolean;
   chatter: {
     username: string;
   };
+};
+
+export type ChatterVideo = YoutubeVideo & {
+  userChatter: PartialUserChatter;
   isLoading?: boolean;
 };
 

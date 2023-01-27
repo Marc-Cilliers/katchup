@@ -8,11 +8,11 @@ datasource db {
 }
 
 model Chatter {
-  id            String          @id @default(cuid())
-  username      String
-  ratings       ChatterRating[]
-  youtubeVideos YoutubeVideo[]
+  id              String     @default(cuid()) @id
+  username        String
+  channels        UserChatter[]
 }
+
 
 model Account {
   id                 String  @id @default(cuid())
@@ -29,7 +29,8 @@ model Account {
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -43,15 +44,15 @@ model Session {
 }
 
 model User {
-  id             String          @id @default(cuid())
-  name           String
-  image          String
-  email          String?         @unique
-  emailVerified  DateTime?
-  accounts       Account[]
-  chatterRatings ChatterRating[]
-  sessions       Session[]
-  youtubeVideos  YoutubeVideo[]
+  id              String    @default(cuid()) @id
+  name            String
+  image           String
+  email           String?   @unique
+  emailVerified   DateTime?
+  chatters        UserChatter[]
+
+  accounts        Account[]
+  sessions        Session[]
 }
 
 model VerificationToken {
@@ -64,27 +65,38 @@ model VerificationToken {
 }
 
 model YoutubeVideo {
-  id        String    @id @default(cuid())
-  timestamp DateTime
-  archived  DateTime?
-  url       String
-  videoId   String
-  title     String?
-  duration  String?
-  channel   String?
-  thumbnail String?
-  chatterId String
-  userId    String
-  channelId String?
-  chatter   Chatter   @relation(fields: [chatterId], references: [id])
-  user      User      @relation(fields: [userId], references: [id])
+  id              String     @default(cuid()) @id
+  timestamp       DateTime
+  archived        DateTime?  
+  url             String
+  videoId         String
+  title           String?
+  duration        String?
+  channel         String?
+  channelId       String?
+  thumbnail       String?
+  userChatter         UserChatter   @relation(fields: [userChatterId], references: [id])
+  userChatterId       String
 }
 
 model ChatterRating {
-  id        String  @id @default(cuid())
-  chatterId String
-  userId    String
-  rating    Int     @default(0)
-  chatter   Chatter @relation(fields: [chatterId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  id              String        @default(cuid()) @id
+  userChatter     UserChatter   @relation(fields: [userChatterId], references: [id])
+  userChatterId       String
+  rating          Int           @default(0)
+}
+
+model UserChatter {
+  id              String    @default(cuid()) @id
+  chatter         Chatter   @relation(fields: [chatterId], references: [id])
+  chatterId       String
+  user            User      @relation(fields: [userId], references: [id])
+  userId          String
+  chatterRatings   ChatterRating[]
+  youtubeVideos     YoutubeVideo[]
+  badges          String[]       @default([])
+  color           String
+  mod             Boolean        @default(false)
+  subscriber      Boolean        @default(false)
+  turbo           Boolean        @default(false)
 }

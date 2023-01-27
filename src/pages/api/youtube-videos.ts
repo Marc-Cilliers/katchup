@@ -6,10 +6,26 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const videos = await prisma.youtubeVideo.findMany({
-    where: { userId: String(req.query["userId"]), archived: null },
+    where: {
+      userChatter: {
+        userId: String(req.query["userId"]),
+      },
+      archived: null,
+    },
     include: {
-      chatter: {
-        select: { username: true },
+      userChatter: {
+        select: {
+          badges: true,
+          color: true,
+          mod: true,
+          subscriber: true,
+          turbo: true,
+          chatter: {
+            select: {
+              username: true,
+            },
+          },
+        },
       },
     },
   });

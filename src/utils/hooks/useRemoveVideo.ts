@@ -32,11 +32,11 @@ export const useRemoveVideo = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const removeVideo = useCallback(
-    async (videoId: string, chatterId: string, rating: number) => {
+    async (videoId: string, userChatterId: string, rating: number) => {
       setIsLoading(true);
 
       await axios.delete(`/api/youtube-video`, {
-        data: { videoId, chatterId, userId: user?.id, rating },
+        data: { videoId, userChatterId, rating },
       });
       callbackFn?.(videoId);
 

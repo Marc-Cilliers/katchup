@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { ChatterVideo, RemoveVideoFn } from "@/utils/hooks/useVideos";
+import {
+  ChatterVideo,
+  PartialUserChatter,
+  RemoveVideoFn,
+} from "@/utils/hooks/useVideos";
 import { Maybe } from "@/utils/utilityTypes";
 import { Icon } from "@/icons/Icon";
 import { Spinner } from "@/components/Spinner";
@@ -8,6 +12,8 @@ import { useRemoveVideo } from "@/utils/hooks/useRemoveVideo";
 import { Timer } from "./Timer";
 import { Thumbnail } from "./Thumbnail";
 import { useState } from "react";
+import Image from "next/image";
+import { BadgeBuilder } from "./BadgeBuilder";
 
 interface VideoCardProps {
   video: ChatterVideo;
@@ -69,7 +75,7 @@ export const VideoCard = ({ video, onRemove }: VideoCardProps) => {
             </Link>
             <Channel channel={video.channel} channelId={video.channelId} />
             <div className="flex flex-row gap-2">
-              <Chatter username={video.chatter.username} />
+              <Chatter userChatter={video.userChatter} />
               <p>·</p>
               <Timer timestamp={video.timestamp as unknown as string} />
             </div>
@@ -78,7 +84,7 @@ export const VideoCard = ({ video, onRemove }: VideoCardProps) => {
             <Ratings
               removeVideo={removeVideo}
               id={video.id}
-              chatterId={video.chatterId}
+              userChatterId={video.userChatterId}
             />
           </div>
         </div>
@@ -112,10 +118,10 @@ const Channel = ({
 interface RatingsProps {
   removeVideo: RemoveVideoFn;
   id: string;
-  chatterId: string;
+  userChatterId: string;
 }
 
-const Ratings = ({ removeVideo, id, chatterId }: RatingsProps) => {
+const Ratings = ({ removeVideo, id, userChatterId }: RatingsProps) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
@@ -126,7 +132,7 @@ const Ratings = ({ removeVideo, id, chatterId }: RatingsProps) => {
       <button
         disabled={liked || disliked}
         onClick={() => {
-          removeVideo(id, chatterId, 1);
+          removeVideo(id, userChatterId, 1);
           setLiked(true);
         }}
         className={`bg-zinc-800 hover:bg-zinc-500 py-2 w-full flex justify-center items-center rounded-l-full ${
@@ -138,7 +144,7 @@ const Ratings = ({ removeVideo, id, chatterId }: RatingsProps) => {
       <button
         disabled={liked || disliked}
         onClick={() => {
-          removeVideo(id, chatterId, 1);
+          removeVideo(id, userChatterId, 1);
           setDisliked(true);
         }}
         className={`bg-zinc-800 hover:bg-zinc-500 py-2 w-full flex justify-center items-center rounded-r-full ${
@@ -151,10 +157,27 @@ const Ratings = ({ removeVideo, id, chatterId }: RatingsProps) => {
   );
 };
 
-const Chatter = ({ username }: { username: Maybe<string> }) => {
+const Chatter = ({ userChatter }: { userChatter: PartialUserChatter }) => {
+  const username = userChatter.chatter.username;
+  const { color, mod, badges } = userChatter;
+
   return (
-    <Link href={`https://twitch.tv/${username}`} target="_blank">
-      <p className="text-md text-purple-500 hover:text-purple-300">
+    <Link
+      href={`https://twitch.tv/${username}`}
+      target="_blank"
+      className="flex flex-row gap-1 align-middle items-center"
+    >
+      {mod && (
+        <Image
+          className="flex w-4 h-4"
+          alt="Moderator"
+          src="https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/3"
+          width={100}
+          height={5}
+        />
+      )}
+      <BadgeBuilder badges={badges} />
+      <p style={{ color }} className={`text-md font-semibold hover:opacity-90`}>
         {username}
       </p>
     </Link>
