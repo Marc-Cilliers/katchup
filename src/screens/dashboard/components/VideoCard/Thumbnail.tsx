@@ -25,7 +25,7 @@ export const Thumbnail = ({
       <ImageWithFallback
         className="rounded-lg w-full h-full"
         src={thumbnailHQ}
-        fallbackSrc={thumbnailNormal ?? ""}
+        fallbackSrc={thumbnailNormal!}
         alt={`${title ?? ""} thumbnail`}
         width={1200}
         height={0}
