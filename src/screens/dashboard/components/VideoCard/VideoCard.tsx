@@ -159,7 +159,7 @@ const Ratings = ({ removeVideo, id, userChatterId }: RatingsProps) => {
 
 const Chatter = ({ userChatter }: { userChatter: PartialUserChatter }) => {
   const username = userChatter.chatter.username;
-  const { color, mod, badges } = userChatter;
+  const { color, badges } = userChatter;
 
   return (
     <Link
@@ -167,15 +167,6 @@ const Chatter = ({ userChatter }: { userChatter: PartialUserChatter }) => {
       target="_blank"
       className="flex flex-row gap-1 align-middle items-center"
     >
-      {mod && (
-        <Image
-          className="flex w-4 h-4"
-          alt="Moderator"
-          src="https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/3"
-          width={100}
-          height={5}
-        />
-      )}
       <BadgeBuilder badges={badges} />
       <p style={{ color }} className={`text-md font-semibold hover:underline`}>
         {username}
