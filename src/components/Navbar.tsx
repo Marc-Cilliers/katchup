@@ -3,12 +3,11 @@ import Image from "next/image";
 import { signOut } from "next-auth/react";
 
 export const Navbar = () => {
-  const { user } = useAuth();
-
-  const userImage = user?.image ?? "";
+  const { user, isAdmin } = useAuth();
+  const userImage = user?.image;
 
   return (
-    <nav className="border-gray-200 px-2 sm:px-4 py-2.5 rounded bg-zinc-900">
+    <nav className="border-gray-200 px-2 sm:px-4 py-2.5 rounded bg-zinc-900 justify-between">
       <div className="container flex flex-wrap items-start justify-start dark">
         <div className="flex flex-row justify-start dark">
           {userImage && (
