@@ -29,7 +29,6 @@ export const Thumbnail = ({
         width={1200}
         height={0}
         priority
-        onError={(e) => console.log("❌ error: ", e)}
         onLoadingComplete={() => {
           onLoadingFinished();
         }}
