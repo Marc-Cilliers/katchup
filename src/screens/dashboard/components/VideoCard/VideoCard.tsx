@@ -14,6 +14,7 @@ import { Thumbnail } from "./Thumbnail";
 import { useState } from "react";
 import { BadgeBuilder } from "./BadgeBuilder";
 import { User } from "@prisma/client";
+import Balancer from "react-wrap-balancer";
 
 interface VideoCardProps {
   video: ChatterVideo;
@@ -96,8 +97,8 @@ export const VideoCard = ({ video, onRemove, user }: VideoCardProps) => {
 
 const Title = ({ title }: { title: string }) => {
   return (
-    <h3 className="text-lg font-semibold overflow-ellipsis max-w-full">
-      {title}
+    <h3>
+      <Balancer>{title}</Balancer>
     </h3>
   );
 };
