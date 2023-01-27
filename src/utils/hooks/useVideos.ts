@@ -1,4 +1,5 @@
 import { YoutubeVideo } from "@prisma/client";
+import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "./useAuth";
 
@@ -43,10 +44,8 @@ export const useVideos = (): UseVideosReturnType => {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
 
-    const res = await fetch(`/api/youtube-videos?userId=${user?.id}`).then(
-      (r) => r.json()
-    );
-    setVideos(res.videos);
+    const res = await axios.get(`/api/youtube-videos?userId=${user?.id}`);
+    setVideos(res.data.videos);
 
     setIsLoading(false);
   }, [user?.id]);
