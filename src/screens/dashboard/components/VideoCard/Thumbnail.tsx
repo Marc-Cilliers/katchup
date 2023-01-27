@@ -1,5 +1,5 @@
+import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { Maybe } from "@/utils/utilityTypes";
-import Image from "next/image";
 
 interface ThumbnailProps {
   url: Maybe<string>;
@@ -21,13 +21,15 @@ export const Thumbnail = ({
 
   return (
     <div className="flex relative flex-col justify-center align-middle items-center max-h-min h-full">
-      <Image
+      <ImageWithFallback
         className="rounded-lg w-full h-full"
         src={thumbnailHQ}
+        fallbackSrc={url}
         alt={`${title ?? ""} thumbnail`}
         width={1200}
         height={0}
         priority
+        onError={(e) => console.log("❌ error: ", e)}
         onLoadingComplete={() => {
           onLoadingFinished();
         }}
