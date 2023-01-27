@@ -10,6 +10,8 @@ export type RemoveVideoFn = (
 
 export type AddVideoFn = (newVideos: ChatterVideo[]) => void;
 
+export type Badges = Record<string, string>;
+
 interface UseVideosReturnType {
   videos: ChatterVideo[];
   onRemove: (videoId: string) => void;
@@ -19,7 +21,7 @@ interface UseVideosReturnType {
 
 export type PartialUserChatter = {
   color: string;
-  badges: string[];
+  badges: Badges;
   mod: boolean;
   subscriber: boolean;
   turbo: boolean;
