@@ -15,6 +15,7 @@ export const Thumbnail = ({
   onLoadingFinished,
 }: ThumbnailProps) => {
   const thumbnailHQ = url?.replace("default", "maxresdefault");
+  const thumbnailNormal = url?.replace("default", "hqdefault");
   const length = getDurationFromString(duration);
 
   if (!url || !thumbnailHQ) return null;
@@ -24,7 +25,7 @@ export const Thumbnail = ({
       <ImageWithFallback
         className="rounded-lg w-full h-full"
         src={thumbnailHQ}
-        fallbackSrc={url}
+        fallbackSrc={thumbnailNormal ?? ""}
         alt={`${title ?? ""} thumbnail`}
         width={1200}
         height={0}
