@@ -131,22 +131,44 @@ const Ratings = ({ removeVideo, id, userChatterId }: RatingsProps) => {
     <div
       className={`flex flex-row mt-2 rounded-full w-1/2 justify-center align-middle gap-0.5`}
     >
-      <button
-        disabled={liked || disliked}
-        onClick={() => {
-          removeVideo(id, userChatterId, 1);
-          setLiked(true);
-        }}
+      <motion.button
         className={`bg-zinc-800 hover:bg-zinc-500 py-2 w-full flex justify-center items-center rounded-l-full ${
           liked && "bg-zinc-100"
         }`}
+        whileHover={{
+          scale: 1.1,
+        }}
+        whileTap={{
+          scale: 0.3,
+          rotate: -45,
+        }}
+        onTapCancel={() => {
+          removeVideo(id, userChatterId, 1);
+          setLiked(true);
+        }}
+        onTap={() => {
+          removeVideo(id, userChatterId, 1);
+          setLiked(true);
+        }}
+        disabled={liked || disliked}
       >
         <Icon name="thumbsUp" color={liked ? "#000000" : undefined} />
-      </button>
-      <button
+      </motion.button>
+      <motion.button
         disabled={liked || disliked}
-        onClick={() => {
-          removeVideo(id, userChatterId, 1);
+        whileHover={{
+          scale: 1.1,
+        }}
+        whileTap={{
+          scale: 0.3,
+          rotate: -45,
+        }}
+        onTapCancel={() => {
+          removeVideo(id, userChatterId, -1);
+          setDisliked(true);
+        }}
+        onTap={() => {
+          removeVideo(id, userChatterId, -1);
           setDisliked(true);
         }}
         className={`bg-zinc-800 hover:bg-zinc-500 py-2 w-full flex justify-center items-center rounded-r-full ${
@@ -154,7 +176,7 @@ const Ratings = ({ removeVideo, id, userChatterId }: RatingsProps) => {
         }`}
       >
         <Icon name="thumbsDown" color={disliked ? "#000000" : undefined} />
-      </button>
+      </motion.button>
     </div>
   );
 };
