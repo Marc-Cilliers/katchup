@@ -37,7 +37,7 @@ export const DashboardScreen = () => {
         </p>
       </div>
       {isLoading && (
-        <div className="content-center justify-center flex">
+        <div className="items-center justify-center flex absolute left-1/2 top-1/2">
           <Spinner />
         </div>
       )}
