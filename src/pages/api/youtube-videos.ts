@@ -28,6 +28,7 @@ export default async function handler(
         },
       },
     },
+    orderBy: { timestamp: "asc" },
   });
 
   res.status(200).json({ videos });
