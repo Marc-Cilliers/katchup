@@ -11,7 +11,7 @@ export type RemoveVideoFn = (
 
 export type AddVideoFn = (newVideos: ChatterVideo[]) => void;
 
-export type Badges = Record<string, string>;
+export type Badges = Record<string, string>[];
 
 interface UseVideosReturnType {
   videos: ChatterVideo[];

@@ -14,6 +14,8 @@ const getIcon: Record<string, (value: string, subBadges?: any) => string> = {
     "https://static-cdn.jtvnw.net/badges/v1/bd444ec6-8f34-4bf9-91f4-af1e3428d80f/3",
   parter: () =>
     "https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/3",
+  founder: () =>
+    "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/3",
   "bits-leader": (value) => {
     switch (value) {
       case "2":
@@ -32,15 +34,16 @@ interface BadgeBuilderProps {
 export const BadgeBuilder = ({ badges, user }: BadgeBuilderProps) => {
   return (
     <div className="flex flex-row gap-1">
-      {Object.keys(badges).map((badge) => {
-        const icon = getIcon[badge](badges[badge], user.badges);
+      {badges.map((badge) => {
+        const [key, value] = Object.entries(badge)[0];
+        const icon = getIcon[key]?.(value, user.badges);
         if (!icon) return null;
 
         return (
           <Image
-            key={badge}
+            key={key}
             className="flex w-4 h-4"
-            alt={badge}
+            alt={key}
             src={icon}
             width={100}
             height={5}
