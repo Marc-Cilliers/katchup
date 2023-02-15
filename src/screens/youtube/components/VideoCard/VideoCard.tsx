@@ -12,9 +12,9 @@ import { useRemoveVideo } from "@/utils/hooks/useRemoveVideo";
 import { Timer } from "./Timer";
 import { Thumbnail } from "./Thumbnail";
 import { useState } from "react";
-import { BadgeBuilder } from "./BadgeBuilder";
 import { User } from "@prisma/client";
 import Balancer from "react-wrap-balancer";
+import { BadgeBuilder } from "@/components/BadgeBuilder";
 
 interface VideoCardProps {
   video: ChatterVideo;
@@ -70,13 +70,13 @@ export const VideoCard = ({ video, onRemove, user }: VideoCardProps) => {
             onLoadingFinished={() => setThumbnailLoaded(true)}
           />
         </Link>
-        <div className="px-2 pt-2 h-1/2 flex flex-col justify-between">
+        <div className="px-2 pt-2 flex flex-col justify-between">
           <div className="flex flex-col">
             <Link key={video.id} href={video.url} target="_blank">
               <Title title={video.title} />
             </Link>
             <Channel channel={video.channel} channelId={video.channelId} />
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 mt-5">
               <Chatter userChatter={video.userChatter} user={user} />
               <p>·</p>
               <Timer timestamp={video.timestamp as unknown as string} />

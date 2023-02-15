@@ -11,6 +11,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "i.ytimg.com",
       },
+      {
+        protocol: "https",
+        hostname: "clips-media-assets2.twitch.tv",
+      },
+      {
+        protocol: "https",
+        hostname: "clips-media-assets.twitch.tv",
+      },
     ],
   },
 };

@@ -8,7 +8,7 @@ import { createVideoFromEventPayload } from "./utils/createVideoFromEvent";
 import { VideoList } from "./components/VideoList";
 import { motion } from "framer-motion";
 
-export const DashboardScreen = () => {
+export const YoutubeScreen = () => {
   const { user } = useAuth();
   const { videos, isLoading, onRemove, addVideos } = useVideos();
   const { subscribeToRoom } = useRealtimeEvents();
@@ -26,8 +26,8 @@ export const DashboardScreen = () => {
   }, []);
 
   return (
-    <div className="h-1/3 flex flex-col">
-      <div className="p-5 text-lg font-semibold text-left text-white">
+    <div className="h-full flex flex-col relative w-full">
+      <div className="px-5 pb-5 text-lg font-semibold text-left text-white">
         <div className="flex flex-row align-middle justify-start gap-2">
           <Icon name="youtube" />
           <p className="leading-7 text-2xl">YouTube Videos</p>
@@ -37,7 +37,7 @@ export const DashboardScreen = () => {
         </p>
       </div>
       {isLoading && (
-        <div className="items-center justify-center flex absolute left-1/2 top-1/2">
+        <div className="items-center justify-center flex h-full absolute left-1/2 top-1/2">
           <Spinner />
         </div>
       )}

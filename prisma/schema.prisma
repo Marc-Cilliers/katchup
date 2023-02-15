@@ -95,6 +95,7 @@ model UserChatter {
   turbo          Boolean         @default(false)
   badges         Json[]          @default([])
   chatterRatings ChatterRating[]
+  twitchClip     TwitchClip[]
   chatter        Chatter         @relation(fields: [chatterId], references: [id])
   user           User            @relation(fields: [userId], references: [id])
   youtubeVideos  YoutubeVideo[]
@@ -105,4 +106,25 @@ model Twitch {
   access_token  String
   refresh_token String
   auth_token    String
+}
+
+model TwitchClip {
+  id              String      @id
+  clipId          String
+  url             String
+  broadcasterId   String
+  broadcasterName String
+  creatorId       String
+  creatorName     String
+  gameId          String
+  language        String
+  title           String
+  viewCount       Int
+  createdAt       String
+  duration        Float
+  thumbnail       String
+  timestamp       DateTime
+  archived        DateTime?
+  userChatterId   String
+  userChatter     UserChatter @relation(fields: [userChatterId], references: [id])
 }

@@ -1,8 +1,7 @@
-import { YoutubeVideo } from "@prisma/client";
+import { TwitchClip } from "@prisma/client";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { useAuth } from "./useAuth";
-import { Badges } from "@/components/BadgeBuilder/BadgeBuilder";
+import { useAuth } from "../../../utils/hooks/useAuth";
 
 export type RemoveVideoFn = (
   videoId: string,
@@ -10,12 +9,14 @@ export type RemoveVideoFn = (
   rating: number
 ) => void;
 
-export type AddVideoFn = (newVideos: ChatterVideo[]) => void;
+export type AddClipFn = (newClips: ChatterClip[]) => void;
+
+export type Badges = Record<string, string>[];
 
 interface UseVideosReturnType {
-  videos: ChatterVideo[];
+  clips: ChatterClip[];
   onRemove: (videoId: string) => void;
-  addVideos: AddVideoFn;
+  addClips: AddClipFn;
   isLoading: boolean;
 }
 
@@ -30,34 +31,34 @@ export type PartialUserChatter = {
   };
 };
 
-export type ChatterVideo = YoutubeVideo & {
+export type ChatterClip = TwitchClip & {
   userChatter: PartialUserChatter;
   isLoading?: boolean;
 };
 
-export const useVideos = (): UseVideosReturnType => {
+export const useClips = (): UseVideosReturnType => {
   const { isAuthReady, isAuthenticated, user } = useAuth();
-  const [videos, setVideos] = useState<ChatterVideo[]>([]);
+  const [clips, setClips] = useState<ChatterClip[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
 
-    const res = await axios.get(`/api/youtube-videos?userId=${user?.id}`);
-    setVideos(res.data.videos);
+    const res = await axios.get(`/api/twitch-clips?userId=${user?.id}`);
+    setClips(res.data.clips);
 
     setIsLoading(false);
   }, [user?.id]);
 
   const onRemove = useCallback(async (id: string) => {
-    setVideos((videos) => videos.filter((v) => v.id !== id));
+    setClips((videos) => videos.filter((v) => v.id !== id));
   }, []);
 
-  const addVideos = useCallback(
-    async (newVideos: ChatterVideo[]) => {
+  const addClips = useCallback(
+    async (newClips: ChatterClip[]) => {
       if (!isAuthReady || !isAuthenticated) return;
 
-      setVideos((videos) => [...videos, ...newVideos]);
+      setClips((clips) => [...clips, ...newClips]);
     },
     [isAuthReady, isAuthenticated]
   );
@@ -69,9 +70,9 @@ export const useVideos = (): UseVideosReturnType => {
   }, [isAuthReady, fetchData]);
 
   return {
-    videos,
+    clips,
     onRemove,
-    addVideos,
+    addClips,
     isLoading,
   };
 };

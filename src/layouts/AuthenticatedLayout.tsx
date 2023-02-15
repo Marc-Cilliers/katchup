@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/Navbar";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { useAuth } from "@/utils/hooks/useAuth";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -26,10 +26,7 @@ export const AuthenticatedLayout = ({
         <meta name="description" content="Katchup Twitch App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <Navbar />
-        {isAuthenticated && <>{children}</>}
-      </main>
+      <main>{isAuthenticated && <Sidebar>{children}</Sidebar>}</main>
     </>
   );
 };
