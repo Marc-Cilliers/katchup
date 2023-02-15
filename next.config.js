@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/dashboard",
+        destination: "/youtube",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

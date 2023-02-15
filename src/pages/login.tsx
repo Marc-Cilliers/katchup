@@ -13,7 +13,7 @@ const Login: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (isAuthReady && isAuthenticated) {
-      void router.replace("/dashboard");
+      void router.replace("/youtube");
     }
   }, [isAuthReady, isAuthenticated, router]);
 

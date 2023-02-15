@@ -9,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     if (isAuthReady && isAuthenticated) {
-      void router.replace("/dashboard");
+      void router.replace("/youtube");
     } else {
       void router.replace("/login");
     }

@@ -139,7 +139,7 @@ const RightSide = ({ messages }: { messages: Message[] }) => {
         </div>
         <div className="py-10 text-lg flex flex-row">
           <SignInButton
-            onClick={() => signIn("twitch", { callbackUrl: "/dashboard" })}
+            onClick={() => signIn("twitch", { callbackUrl: "/youtube" })}
           />
         </div>
       </div>
